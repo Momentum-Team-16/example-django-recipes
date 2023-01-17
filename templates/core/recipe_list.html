@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Recipes{% endblock title %}
+
+{% block content %}
+  <div class="mr2">
+    <a href="{% url 'add_recipe' %}">Add a recipe</a>
+  </div>
+  <ul class="list pl0 flex flex-wrap" id="recipe-list">
+  {% for recipe in recipes %}
+    <li class="ba br1 pa2 mr2 mb2">
+      <div>
+        <h2><a href={% url 'recipe_detail' pk=recipe.pk %}> {{ recipe.title }}</a></h2> (by {{ recipe.author }})
+      </div>
+      <div>{% if not recipe.public %}<b>private</b>{% endif %}</div>
+      {% if recipe.times_cooked %}
+      <div>cooked {{ recipe.times_cooked }} time{{ recipe.times_cooked|pluralize }}</div>
+      {% endif %}
+      <div>{{ recipe.total_time_in_minutes }} minutes to make</div>
+    </li>
+  {% endfor %}
+{% endblock content %}

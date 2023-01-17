@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/vendor/dragula.min.css' %}">
+{% endblock css %}
+
+{% block js %}
+<script src={% static 'js/vendor/dragula/dragula.min.js' %} ></script>
+<script src={% static 'js/vendor/moment/moment.min.js' %} ></script>
+<script src={% static 'js/mealplan.js' %} defer></script>
+{% endblock js %}
+
+{% block content %}
+<h1>Meal plan for {{ date }}</h1>
+
+<p>
+  <a href="{% url 'show_meal_plan' year=prev_day.year month=prev_day.month day=prev_day.day %}">{{ prev_day }}</a> |
+  <a href="{% url 'show_meal_plan' year=next_day.year month=next_day.month day=next_day.day %}">{{ next_day }}</a>
+</p>
+
+<div class="flex">
+<div class="w-50 pr3 flex flex-column">
+  <h2>The Plan</h2>
+  <div id="meal-plan" class="flex-auto ba b--dark-blue-30 pa2" data-date="{{ plan.date }}">
+  {% for recipe in plan.recipes.all %}
+    <div class="pa2 ba bw1 mb2" style="cursor: move" data-pk="{{ recipe.pk }}">{{ recipe.title }}</div>
+  {% endfor %}
+  </div>
+</div>
+
+<div class="w-50 flex flex-column">
+  <h2>👈 Drag a Recipe to Add</h2>
+  <div id="recipes" class="flex-auto" data-add-remove-url={% url 'add_remove_recipe' %}>
+  {% for recipe in recipes_to_add.all %}
+    <div class="pa2 ba bw1 mb2" style="cursor: move" data-pk="{{ recipe.pk }}">{{ recipe.title }}</div>
+  {% endfor %}
+  </div>
+</div>
+</div>
+{% endblock %}
+
+

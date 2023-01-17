@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block meta %}{% endblock %}
+    <title>{% block title %}Recipe Book{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css"
+    />
+    {% block css %}{% endblock css %}
+  </head>
+  <body class="sans-serif bg-near-white">
+    <header class="pa3 bg-near-black white">
+      <h1 class="ma0"><a class="white no-underline" href="{% url 'homepage' %}">Recipe Book</a></h1>
+      <div class="flex justify-between">
+        {% if user.is_authenticated %}
+        <div class="mr2 b">
+          Hello, {{ user.username }}!
+          <a href={% url 'auth_logout' %} class="near-white">Log Out</a>
+        </div>
+        <div class="mr2">
+          <a href={% url 'todays_meal_plan' %} class="near-white">Today's meal plan</a>
+        </div>
+        {% endif %}
+    </div>
+    </header>
+    <main class="pa3">
+    {% if messages %}
+      {% for message in messages %}
+      <div
+        class="messages ba br2 b--silver pa2 {% if message.tags == 'success' %} bg-washed-green
+        {% elif message.tags == 'error' %}
+        bg-washed-red
+        {% endif %}
+      ">
+        {{ message }}
+      </div>
+      {% endfor %}
+    {% endif %}
+      <div class="container">{% block content %} {% endblock content %}</div>
+    </main>
+    {% block js %}{% endblock js%}
+  </body>
+</html>

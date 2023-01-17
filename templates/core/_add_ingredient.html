@@ -1,0 +1,19 @@
+{% block content %}
+
+
+<form action="{% url 'add_ingredient' recipe_pk=recipe.pk %}" method="POST" class="pa4 black-80">
+  {% csrf_token %}
+  {% for field in ingredient_form %}
+    <div class="flex items-center mb2">
+      <label for="{{field.id_for_label}}" class="pr2 f6 b db mb1 mt3">{{ field.label}}</label>
+      {{ field }}
+    </div>
+  {% endfor %}
+    <div class="submit">
+      <button type="submit" class="f6 link dim br3 ba b--dark-blue bw1 ph3 pv2 mb2 dib bg-dark-blue white">Add ingredient to {{ recipe.title }}</button>
+    </div>
+  <div>
+  </div>
+</form>
+
+{% endblock %}
